@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class Enemy : MonoBehaviour
 {
     // make proxy later
     public EnemyType type;
-    public float health;
+    public int health;
     public float speed;
 
     public void SetData(EnemyData data)
@@ -17,7 +18,7 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
     }
 
-    public IEnumerator Traverse(List<Tile> path)
+    public IEnumerator Traverse(List<Tile> path, Action finishCallback)
     {
         for (int index = 0; index < path.Count; index++) {
             Tile tile = path[index];
@@ -31,6 +32,8 @@ public class Enemy : MonoBehaviour
 
             yield return StartCoroutine(MoveTo(tile));
         }
+
+        finishCallback();
     }
 
     private IEnumerator MoveTo(Tile tile)

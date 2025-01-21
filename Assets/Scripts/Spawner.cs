@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     private List<Tile> path;
 
+    [SerializeField] private Field grid;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private List<EnemyData> enemyDatas;
 
@@ -61,8 +61,19 @@ public class Spawner : MonoBehaviour
             GameObject newEnemy = Instantiate(enemyPrefab, enemyContainer.transform); // Creates a new game object, using the prefab as a template
             Enemy enemy = newEnemy.GetComponent<Enemy>(); // Gets the Enemy class component of the game object
 
+            // Creating a callback, so that when the enemy reaches the end, the base will be damaged
+            void callback()
+            {
+                Base endBase = grid.endBase;
+                endBase.TakeDamage(enemy.health);
+
+                Debug.Log(endBase.Health); // <temp>
+
+                Destroy(newEnemy);
+            };
+
             enemy.SetData(enemyData);
-            StartCoroutine(enemy.Traverse(path)); // Moves the enemy along the pathway
+            StartCoroutine(enemy.Traverse(path, callback)); // Moves the enemy along the pathway
 
             // Suspends execution until given interval has passed
             yield return waitInterval;

@@ -15,6 +15,7 @@ public class Field : MonoBehaviour
     [SerializeField] private int columns;
 
     public Spawner spawner;
+    public Base endBase;
 
     public int Rows { get { return rows; } }
     public int Columns { get { return columns; } }
