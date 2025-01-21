@@ -268,6 +268,7 @@ MonoBehaviour:
   rows: 5
   columns: 11
   spawner: {fileID: 1329923357}
+  endBase: {fileID: 1023614072}
 --- !u!1 &995026071
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1023614071}
+  - component: {fileID: 1023614072}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -330,6 +332,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 927303077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1023614072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023614070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c74d452ffd4f0a46a21f26d56cbe49a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!1 &1329923356
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21d1251561078df44b7d663305476ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 927303078}
   enemyPrefab: {fileID: 6970293090207761446, guid: 20a0087c0a0731a4598cfcadc720b571, type: 3}
   enemyDatas:
   - {fileID: 11400000, guid: 3086cfd4e5382f744a151b6e31cd5383, type: 2}
