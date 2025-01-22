@@ -5,27 +5,38 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     private List<Tile> pathway;
+    private bool active = false;
 
     [SerializeField] private Field grid;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private List<EnemyData> enemyDatas;
 
-    private void SetPath(List<Tile> pathway)
-    {
-        // <note> check if schedule is running
-        // - set if not running, otherwise something else?
-        // should check if pathway length > 1
-        this.pathway = pathway;
-    }
-
     public void Begin(SpawnSchedule schedule)
     {
-        // <note> should probably account for already running schedule edgecase
-        // check if a path has been set, set path to null if schedule fully finishes or is quit
+        // More validation, to ensure code doesn't fail
+        if (active)
+            return;
+
         Path path = grid.Path;
-        SetPath(path.Pathway);
+        bool success = SetPath(path.Pathway);
+
+        if (!success)
+            return;
+
+        active = true;
 
         StartCoroutine(RunSchedule(schedule));
+    }
+
+    private bool SetPath(List<Tile> pathway)
+    {
+        // Added edgecases in case this scenario causes failure
+        if (pathway.Count == 0)
+            return false;
+
+        this.pathway = pathway;
+
+        return true;
     }
 
     private IEnumerator RunSchedule(SpawnSchedule schedule)
