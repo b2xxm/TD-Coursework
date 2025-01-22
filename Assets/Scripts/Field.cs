@@ -5,34 +5,38 @@ using UnityEngine;
 public class Field : MonoBehaviour
 {
     private Dictionary<Address, Tile> tiles;
-    private Path path;
 
     // Values are set within the inspector
+    [SerializeField] private Spawner spawner;
+    [SerializeField] private Base endBase;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject container;
     [SerializeField] private float padding;
     [SerializeField] private int rows;
     [SerializeField] private int columns;
 
-    public Spawner spawner;
-    public Base endBase;
+    // Proxy that returns the rows and columns, so that those variables can't be changed
+    public Spawner Spawner => spawner;
+    public Base EndBase => endBase;
+    public Path Path { get; private set; }
+    public int Rows => rows;
+    public int Columns => columns;
 
-    public int Rows { get { return rows; } }
-    public int Columns { get { return columns; } }
+    // <note> temporary, not how schedule should be set
+    [SerializeField] private SpawnSchedule schedule;
 
     // Awake is called when the game starts running
     private void Awake()
     {
         tiles = new();
-        path = new(this);
+        Path = new(this);
 
         // Generates a new grid
         GenerateGrid();
 
-        // <temp> shouldn't be called on start-up
+        // <note> temporary, shouldn't be called on start-up
         NewPathway(null);
-        StartCoroutine(spawner.RunSchedule(path.Pathway));
-        // </temp>
+        spawner.Begin(schedule);
     }
 
     // Creates a grid of tile game objects
@@ -80,7 +84,7 @@ public class Field : MonoBehaviour
     // Only calls the Generate method on the path, which generates a new path // ignore iteration 1
     public void NewPathway(int? seed)
     {
-        path.Generate(seed);
+        Path.Generate(seed);
     }
 
     // Finds, and returns the tile component via address if it is found, else null is returned

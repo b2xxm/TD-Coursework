@@ -6,16 +6,16 @@ public class Path
 {
     private const double maxSeed = 1e9;
 
-    private Field grid;
-    private List<Tile> blacklist; // Caches each visited tile that will always be invalid
+    private System.Random random; // System.Random is better than Random - allows for better random control
     private Tile endTile;
-    private System.Random random; // System.Random > Random - allows for better random control
-    private int seed;
 
-    public int Seed { get { return seed; } } // Acts as a proxy. Variable can't be set without a setter, but can be read
+    private readonly Field grid;
+    private readonly List<Tile> blacklist; // Caches each visited tile that will always be invalid
+
+    public int Seed { get; private set; } // Can only be set within the class
     public List<Tile> Pathway { get; }
 
-    // Initialiser. Called when a new object is instantiated
+    // Called when a new object is instantiated
     public Path(Field grid)
     {
         this.grid = grid;
@@ -25,10 +25,10 @@ public class Path
     }
 
     // Generates a new pseudorandom pathway. Optional seed argument
-    public void Generate(int? seed)
+    public void Generate(int? givenSeed)
     {
         Reset();
-        SetSeed(seed);
+        SetSeed(givenSeed);
 
         int rows = grid.Rows;
         int columns = grid.Columns;
@@ -162,11 +162,11 @@ public class Path
     private void SetSeed(int? newSeed)
     {
         if (!newSeed.HasValue || newSeed <= 0 || newSeed >= maxSeed) {
-            seed = Random.Range(1, (int) maxSeed);
+            Seed = Random.Range(1, (int) maxSeed);
         } else {
-            seed = (int) newSeed;
+            Seed = (int) newSeed;
         }
 
-        random = new(seed);
+        random = new(Seed);
     }
 }
