@@ -262,13 +262,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535bbad49f9fe8947a426eea0e607dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawner: {fileID: 1329923357}
+  endBase: {fileID: 1023614072}
   tilePrefab: {fileID: 7185188931291187497, guid: 1459afacd804d8e4ba7e3b7c4e47474b, type: 3}
   container: {fileID: 2120835920}
   padding: 0.05
   rows: 5
   columns: 11
-  spawner: {fileID: 1329923357}
-  endBase: {fileID: 1023614072}
+  schedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
 --- !u!1 &995026071
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,8 +381,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3086cfd4e5382f744a151b6e31cd5383, type: 2}
   - {fileID: 11400000, guid: e6937f497cb65bf408094b41b3c2dd28, type: 2}
   - {fileID: 11400000, guid: d0d408c8acfb42c43b8b374f4f1a2846, type: 2}
-  enemyContainer: {fileID: 995026071}
-  schedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
 --- !u!4 &1329923358
 Transform:
   m_ObjectHideFlags: 0
