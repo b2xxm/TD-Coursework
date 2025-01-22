@@ -5,43 +5,45 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public const float size = 1;
+    public const float size = 1; // Arbitrary size value
 
     private Field grid;
-    private Address address;
+
+    private readonly List<Vector2Int> directions = new()
+    {
+        new(-1, 0), new(1, 0), new(0, 1), new(0, -1) // Direction vectors, to find the relative adjacent tiles
+    };
+
+    public Address Address { get; private set; }
 
     public void Initialize(Field grid, Address address)
     {
         this.grid = grid;
-        this.address = address;
+        Address = address;
     }
 
     public List<Tile> GetAdjacent()
     {
         List<Tile> adjacent = new();
 
-        int currentRow = address.Row;
-        int currentColumn = address.Column;
+        int currentRow = Address.Row;
+        int currentColumn = Address.Column;
 
-        for (int row = currentRow - 1; row <= currentRow + 1; row++) {
-            for (int column = currentColumn - 1; column <= currentColumn + 1; column++) {
-                if (row == currentRow && column == currentColumn) {
-                    continue;
-                }
+        // Gets each tile in each direction, relative to the current tile
+        foreach (Vector2Int direction in directions) {
+            int row = currentRow + direction.x;
+            int column = currentColumn + direction.y;
 
-                if (row != currentRow && column != currentColumn) {
-                    continue;
-                }
+            // Creates a new address using new values, and tries finding if the tile exists
+            Address newAddress = new(row, column);
+            Tile tile = grid.FindTileByAddress(newAddress);
 
-                Address newAddress = new(row, column);
-                Tile tile = grid.FindTileByAddress(newAddress);
-
-                if (tile == null) {
-                    continue;
-                }
-
-                adjacent.Add(tile);
+            if (tile == null) {
+                continue;
             }
+
+            // Adds to list if it exists
+            adjacent.Add(tile);
         }
 
         return adjacent;
