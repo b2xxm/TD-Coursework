@@ -5,11 +5,16 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     private List<Tile> pathway;
-    private bool active = false;
+    private bool active;
 
     [SerializeField] private Field grid;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private List<EnemyData> enemyDatas;
+
+    private void Awake()
+    {
+        active = false;
+    }
 
     public void Begin(SpawnSchedule schedule)
     {
@@ -78,8 +83,6 @@ public class Spawner : MonoBehaviour
             {
                 Base endBase = grid.EndBase;
                 endBase.TakeDamage(enemy.health);
-
-                Debug.Log(endBase.Health); // <note> remove later
 
                 Destroy(newEnemy);
             };
