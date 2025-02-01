@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // make proxy later
+    // <note> make proxy later
     public EnemyType type;
     public int health;
     public float speed;
@@ -16,6 +16,11 @@ public class Enemy : MonoBehaviour
         type = data.type;
         health = data.health;
         speed = data.speed;
+
+        SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
+
+        sprite.color = data.color;
+        transform.localScale *= data.scale;
     }
 
     public IEnumerator Traverse(List<Tile> path, Action finishCallback)

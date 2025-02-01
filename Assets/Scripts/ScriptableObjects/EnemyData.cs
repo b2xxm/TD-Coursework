@@ -8,4 +8,7 @@ public class EnemyData : ScriptableObject
     public EnemyType type;
     public int health;
     public float speed;
+
+    public Color color;
+    public float scale;
 }

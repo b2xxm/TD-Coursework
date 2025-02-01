@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fast
   m_EditorClassIdentifier: 
   type: 1
-  enemyName: Quick
   health: 5
   speed: 2.5
+  color: {r: 0.9019608, g: 0.9019608, b: 0.35807845, a: 1}
+  scale: 0.6

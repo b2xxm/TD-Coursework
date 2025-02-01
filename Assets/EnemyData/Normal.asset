@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Normal
   m_EditorClassIdentifier: 
   type: 0
-  enemyName: Basic
   health: 10
   speed: 1
+  color: {r: 0.9019608, g: 0.44737256, b: 0.44737256, a: 1}
+  scale: 1
