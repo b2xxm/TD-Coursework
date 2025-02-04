@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 401982977}
   - component: {fileID: 401982976}
   m_Layer: 5
-  m_Name: 2
+  m_Name: Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 561047899}
   - component: {fileID: 561047898}
   m_Layer: 5
-  m_Name: 3
+  m_Name: Hard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 1798725365}
   - component: {fileID: 1798725364}
   m_Layer: 5
-  m_Name: 1
+  m_Name: Easy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1719,13 +1719,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 7106f48013e5b564e814841a441272fa, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 601012324}
+        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+        m_MethodName: Easy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -25,5 +26,10 @@ public class MenuUI : MonoBehaviour
     {
         selection.SetActive(false);
         Application.Quit();
+    }
+
+    public void Easy()
+    {
+        SceneManager.LoadSceneAsync("Easy");
     }
 }
