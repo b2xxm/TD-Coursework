@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Field : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Field : MonoBehaviour
     [SerializeField] private Base endBase;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject container;
+    [SerializeField] private TMP_InputField seedInput;
+    [SerializeField] private GameObject buttons;
     [SerializeField] private float padding;
     [SerializeField] private int rows;
     [SerializeField] private int columns;
@@ -18,25 +21,18 @@ public class Field : MonoBehaviour
     // Proxy that returns the rows and columns, so that those variables can't be changed
     public Spawner Spawner => spawner;
     public Base EndBase => endBase;
-    public Path Path { get; private set; }
+    public Path PathObject { get; private set; }
     public int Rows => rows;
     public int Columns => columns;
-
-    // <note> temporary, not how schedule should be set
-    [SerializeField] private SpawnSchedule schedule;
 
     // Awake is called when the game starts running
     private void Awake()
     {
         tiles = new();
-        Path = new(this);
+        PathObject = new(this);
 
-        // Generates a new grid
-        GenerateGrid();
-
-        // <note> temporary, shouldn't be called on start-up
-        NewPathway(null);
-        spawner.Begin(schedule);
+        GenerateGrid(); // Generates a new grid
+        RandomiseSeed(); // Generates a path with a random seed
     }
 
     // Creates a grid of tile game objects
@@ -66,6 +62,34 @@ public class Field : MonoBehaviour
         }
     }
 
+    public void SetSeed()
+    {
+        // Tries parsing input text from seed
+        bool success = int.TryParse(seedInput.text, out int seed);
+
+        if (success) {
+            // Setting the same seed is redundant
+            if (seed == PathObject.Seed)
+                return;
+
+            PathObject.Generate(seed);
+
+            // Edge case, if input seed is negative and the seed randomises
+            string seedText = PathObject.Seed.ToString();
+            seedInput.text = seedText;
+        } else {
+            RandomiseSeed();
+        }
+    }
+
+    public void RandomiseSeed()
+    {
+        PathObject.Generate(null);
+
+        string seedText = PathObject.Seed.ToString();
+        seedInput.text = seedText;
+    }
+
     // Converts the given address to a world position
     public Vector3 AddressToPosition(Address address)
     {
@@ -81,12 +105,6 @@ public class Field : MonoBehaviour
         return new(x, y);
     }
 
-    // Only calls the Generate method on the path, which generates a new path // ignore iteration 1
-    public void NewPathway(int? seed)
-    {
-        Path.Generate(seed);
-    }
-
     // Finds, and returns the tile component via address if it is found, else null is returned
     public Tile FindTileByAddress(Address address)
     {
@@ -94,5 +112,13 @@ public class Field : MonoBehaviour
 
         // Ternary statement shortens it to a one-liner, same logic to using if statements
         return success ? tile : null;
+    }
+
+    public void StartGame()
+    {
+        seedInput.readOnly = true;
+        buttons.SetActive(false);
+
+        Spawner.Begin();
     }
 }
