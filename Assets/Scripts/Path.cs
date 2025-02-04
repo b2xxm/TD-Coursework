@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Path
 {
-    private const double maxSeed = 1e9;
+    private const double maxSeed = 1e9 - 1;
 
     private System.Random random; // System.Random is better than Random - allows for better random control
     private Tile endTile;
@@ -58,12 +58,14 @@ public class Path
         }
 
         CreatePath(start);
-        Visualize();
+        Visualize(true);
     }
 
     // Clears the current pathway, and resets the blacklist; for the next path generation
     private void Reset()
     {
+        Visualize(false);
+
         Pathway.Clear();
         blacklist.Clear();
     }
@@ -150,11 +152,13 @@ public class Path
     }
 
     // Renders the pathway to a different colour
-    private void Visualize()
+    private void Visualize(bool enabled)
     {
+        float value = enabled ? 0.4f : 1f;
+
         foreach (Tile tile in Pathway) {
-            Renderer renderer = tile.GetComponent<Renderer>();
-            renderer.material.color = Color.HSVToRGB(0f, 0f, 0.4f);
+            SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+            renderer.color = Color.HSVToRGB(0f, 0f, value);
         }
     }
 

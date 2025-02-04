@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
         if (active)
             return;
 
-        Path path = grid.Path;
+        Path path = grid.PathObject;
         bool success = SetPath(path.Pathway);
 
         if (!success)
