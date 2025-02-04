@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class MenuUI : MonoBehaviour
 {
     [SerializeField] private GameObject selection;
+    [SerializeField] private SpawnSchedule easySchedule;
+    [SerializeField] private SpawnSchedule mediumSchedule;
+    [SerializeField] private SpawnSchedule hardSchedule;
 
     public void Awake()
     {
@@ -30,6 +33,19 @@ public class MenuUI : MonoBehaviour
 
     public void Easy()
     {
-        SceneManager.LoadSceneAsync("Easy");
+        Spawner.schedule = easySchedule;
+        SceneManager.LoadSceneAsync("Game");
+    }
+
+    public void Medium()
+    {
+        Spawner.schedule = mediumSchedule;
+        SceneManager.LoadSceneAsync("Game");
+    }
+
+    public void Hard()
+    {
+        Spawner.schedule = easySchedule;
+        SceneManager.LoadSceneAsync("Game");
     }
 }

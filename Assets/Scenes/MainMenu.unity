@@ -530,6 +530,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selection: {fileID: 545834377}
+  easySchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
+  mediumSchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
+  hardSchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
 --- !u!1 &649278103
 GameObject:
   m_ObjectHideFlags: 0

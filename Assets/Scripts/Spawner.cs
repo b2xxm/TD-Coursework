@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    // Static, enables us to change the variable across scenes
+    public static SpawnSchedule schedule;
+
     private List<Tile> pathway;
     private bool active;
 
@@ -16,7 +19,7 @@ public class Spawner : MonoBehaviour
         active = false;
     }
 
-    public void Begin(SpawnSchedule schedule)
+    public void Begin()
     {
         // More validation, to ensure code doesn't fail
         if (active)
