@@ -7,18 +7,17 @@ public class Enemy : MonoBehaviour
 {
     private Field grid;
 
-    // <note> make proxy later
-    public int health;
-    public float speed;
-    public int reward;
+    public int Health { get; private set; }
+    public float Speed { get; private set; }
+    public int Reward { get; private set; }
 
     public void Initialise(Field grid, EnemyData data)
     {
         this.grid = grid;
 
-        health = data.health;
-        speed = data.speed;
-        reward = data.reward;
+        Health = data.health;
+        Speed = data.speed;
+        Reward = data.reward;
 
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = data.color;
@@ -27,10 +26,10 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
+        Health -= amount;
 
-        if (health <= 0) {
-            grid.EndBase.AddCash(reward);
+        if (Health <= 0) {
+            grid.EndBase.AddCash(Reward);
 
             Destroy(gameObject);
         }
@@ -59,7 +58,7 @@ public class Enemy : MonoBehaviour
         Vector3 start = transform.position;
         Vector3 end = tile.transform.position;
 
-        float totalTime = 1 / speed;
+        float totalTime = 1 / Speed;
         float elapsed = 0;
 
         while (true) {

@@ -85,7 +85,7 @@ public class Spawner : MonoBehaviour
             void callback()
             {
                 Base endBase = grid.EndBase;
-                endBase.TakeDamage(enemy.health);
+                endBase.TakeDamage(enemy.Health);
 
                 Destroy(newEnemy);
             };
