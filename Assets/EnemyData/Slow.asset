@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Slow
   m_EditorClassIdentifier: 
   type: 2
-  health: 30
+  health: 50
   speed: 0.5
+  reward: 15
   color: {r: 0.4509804, g: 0.7516341, b: 0.9019608, a: 1}
   scale: 1.2

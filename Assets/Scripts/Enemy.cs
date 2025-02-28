@@ -5,22 +5,35 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private Field grid;
+
     // <note> make proxy later
-    public EnemyType type;
     public int health;
     public float speed;
+    public int reward;
 
-    public void SetData(EnemyData data)
+    public void Initialise(Field grid, EnemyData data)
     {
-        // <note> check if is not traversing
-        type = data.type;
+        this.grid = grid;
+
         health = data.health;
         speed = data.speed;
+        reward = data.reward;
 
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
-
         sprite.color = data.color;
         transform.localScale *= data.scale;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        health -= amount;
+
+        if (health <= 0) {
+            grid.EndBase.AddCash(reward);
+
+            Destroy(gameObject);
+        }
     }
 
     public IEnumerator Traverse(List<Tile> path, Action finishCallback)
@@ -72,11 +85,3 @@ public enum EnemyType
     Fast,
     Slow
 }
-
-/* TO-DO
-
- * Enemy behaviour
-   - health
-   - base damaging
-
-*/

@@ -90,7 +90,7 @@ public class Spawner : MonoBehaviour
                 Destroy(newEnemy);
             };
 
-            enemy.SetData(enemyData);
+            enemy.Initialise(grid, enemyData);
             StartCoroutine(enemy.Traverse(pathway, callback)); // Moves the enemy along the pathway
 
             // Suspends execution until given interval has passed

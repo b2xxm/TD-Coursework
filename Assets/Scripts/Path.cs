@@ -157,8 +157,7 @@ public class Path
         float value = enabled ? 0.4f : 1f;
 
         foreach (Tile tile in Pathway) {
-            SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-            renderer.color = Color.HSVToRGB(0f, 0f, value);
+            tile.spriteRenderer.color = Color.HSVToRGB(0f, 0f, value);
         }
     }
 

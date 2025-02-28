@@ -7,10 +7,13 @@ using TMPro;
 public class Base : MonoBehaviour
 {
     private int health;
+    private int cash;
 
     [SerializeField] private int maxHealth;
+    [SerializeField] private int startingCash;
     [SerializeField] private Slider slider;
-    [SerializeField] private TMP_Text display;
+    [SerializeField] private TMP_Text healthDisplay;
+    [SerializeField] private TMP_Text cashDisplay;
 
     public int Health {
         get => health;
@@ -21,7 +24,20 @@ public class Base : MonoBehaviour
             health = value;
 
             slider.value = (float) health / maxHealth;
-            display.SetText($"{health} / {maxHealth}");
+            healthDisplay.SetText($"{health} / {maxHealth}");
+        }
+    }
+
+    public int Cash {
+        get => cash;
+        private set
+        {
+            if (cash == value)
+                return;
+
+            cash = value;
+
+            cashDisplay.SetText($"${cash}");
         }
     }
 
@@ -40,8 +56,14 @@ public class Base : MonoBehaviour
         }
     }
 
+    public void AddCash(int amount)
+    {
+        Cash += amount;
+    }
+
     public void ResetBase()
     {
         Health = maxHealth;
+        Cash = startingCash;
     }
 }
