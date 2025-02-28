@@ -14,12 +14,19 @@ public class Tile : MonoBehaviour
         new(-1, 0), new(1, 0), new(0, 1), new(0, -1) // Direction vectors, to find the relative adjacent tiles
     };
 
+    [SerializeField] private GameObject selectHighlight;
+    [SerializeField] private GameObject hoverHighlight;
+
+    public SpriteRenderer spriteRenderer;
     public Address Address { get; private set; }
 
     public void Initialize(Field grid, Address address)
     {
         this.grid = grid;
         Address = address;
+
+        selectHighlight.SetActive(false);
+        hoverHighlight.SetActive(false);
     }
 
     public List<Tile> GetAdjacent()
@@ -47,6 +54,41 @@ public class Tile : MonoBehaviour
         }
 
         return adjacent;
+    }
+
+    public void Highlight(bool enabled)
+    {
+        selectHighlight.SetActive(enabled);
+    }
+
+    public void OnMouseDown()
+    {
+        Path pathObject = grid.PathObject;
+
+        if (pathObject.Pathway.Contains(this))
+            return;
+
+        grid.SelectTile(this);
+    }
+
+    public void OnMouseEnter()
+    {
+        Path pathObject = grid.PathObject;
+
+        if (pathObject.Pathway.Contains(this))
+            return;
+
+        hoverHighlight.SetActive(true);
+    }
+
+    public void OnMouseExit()
+    {
+        Path pathObject = grid.PathObject;
+
+        if (pathObject.Pathway.Contains(this))
+            return;
+
+        hoverHighlight.SetActive(false);
     }
 }
 
@@ -88,7 +130,3 @@ public class Address
         return HashCode.Combine(Row, Column);
     }
 }
-
-// With this new implementation of the Address class, Field.FindTileByAddress breaks, and equality of addresses doesn't work
-// Despite the row and columns of the two Address objects being similar, they are difference objects
-// Because of this, the method always returns null, and therefore the code which uses this method fails

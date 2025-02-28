@@ -14,6 +14,7 @@ public class Field : MonoBehaviour
     [SerializeField] private GameObject container;
     [SerializeField] private TMP_InputField seedInput;
     [SerializeField] private GameObject buttons;
+    [SerializeField] private GameObject towerMenu;
     [SerializeField] private float padding;
     [SerializeField] private int rows;
     [SerializeField] private int columns;
@@ -24,12 +25,15 @@ public class Field : MonoBehaviour
     public Path PathObject { get; private set; }
     public int Rows => rows;
     public int Columns => columns;
+    public Tile SelectedTile { get; private set; }
 
     // Awake is called when the game starts running
     private void Awake()
     {
         tiles = new();
         PathObject = new(this);
+
+        towerMenu.SetActive(false);
 
         GenerateGrid(); // Generates a new grid
         RandomiseSeed(); // Generates a path with a random seed
@@ -88,6 +92,9 @@ public class Field : MonoBehaviour
 
         string seedText = PathObject.Seed.ToString();
         seedInput.text = seedText;
+
+        if (SelectedTile != null)
+            SelectTile(SelectedTile);
     }
 
     // Converts the given address to a world position
@@ -120,5 +127,20 @@ public class Field : MonoBehaviour
         buttons.SetActive(false);
 
         Spawner.Begin();
+    }
+
+    public void SelectTile(Tile tile)
+    {
+        if (SelectedTile != null)
+            SelectedTile.Highlight(false);
+
+        if (SelectedTile == tile) {
+            SelectedTile = null;
+        } else {
+            SelectedTile = tile;
+            tile.Highlight(true);
+        }
+
+        towerMenu.SetActive(SelectedTile != null);
     }
 }
