@@ -5,6 +5,7 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     public TowerType type;
+    public SpriteRenderer spriteRenderer;
 }
 
 public enum TowerType

@@ -19,6 +19,7 @@ public class Tile : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
     public Address Address { get; private set; }
+    public Tower Occupier { get; private set; }
 
     public void Initialize(Field grid, Address address)
     {
@@ -59,6 +60,14 @@ public class Tile : MonoBehaviour
     public void Highlight(bool enabled)
     {
         selectHighlight.SetActive(enabled);
+    }
+
+    public void PlaceTower(Tower tower)
+    {
+        Occupier = tower;
+
+        tower.transform.parent = transform;
+        tower.transform.localPosition = new(0, 0, -3);
     }
 
     public void OnMouseDown()

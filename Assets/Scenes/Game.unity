@@ -2002,6 +2002,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b888e02b588109d4f9d2aa9452bd0578, type: 2}
   - {fileID: 11400000, guid: 18449727237e1fe4a8b22ec775c2e050, type: 2}
   - {fileID: 11400000, guid: 4cffa04e722032a41bc3842b265ab88b, type: 2}
+  towerPrefab: {fileID: 0}
+  grid: {fileID: 0}
   purchaseCost: {fileID: 247628250}
   selectedTower: {fileID: 1711422592}
 --- !u!1 &927303075
@@ -2314,7 +2316,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 960073401}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 854618915}
+        m_TargetAssemblyTypeName: TowerManager, Assembly-CSharp
+        m_MethodName: Purchase
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &960073401
 MonoBehaviour:
   m_ObjectHideFlags: 0
