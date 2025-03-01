@@ -7,9 +7,12 @@ public class Enemy : MonoBehaviour
 {
     private Field grid;
 
+    [SerializeField] private BoxCollider2D collider2d;
+
     public int Health { get; private set; }
-    public float Speed { get; private set; }
     public int Reward { get; private set; }
+    public float Speed { get; private set; }
+    public float Travelled { get; private set; }
 
     public void Initialise(Field grid, EnemyData data)
     {
@@ -18,10 +21,13 @@ public class Enemy : MonoBehaviour
         Health = data.health;
         Speed = data.speed;
         Reward = data.reward;
+        Travelled = 0;
 
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = data.color;
+
         transform.localScale *= data.scale;
+        collider2d.size *= data.scale;
     }
 
     public void TakeDamage(int amount)
@@ -60,6 +66,7 @@ public class Enemy : MonoBehaviour
 
         float totalTime = 1 / Speed;
         float elapsed = 0;
+        float initialTravelled = Travelled;
 
         while (true) {
             elapsed = Mathf.Min(elapsed + Time.deltaTime, totalTime);
@@ -68,6 +75,8 @@ public class Enemy : MonoBehaviour
 
             Vector3 position = Vector3.Lerp(start, end, alpha);
             transform.position = new(position.x, position.y, -1);
+
+            Travelled = initialTravelled + alpha;
 
             if (alpha == 1) {
                 break;

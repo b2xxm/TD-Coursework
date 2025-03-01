@@ -25,9 +25,6 @@ public class Tile : MonoBehaviour
     {
         this.grid = grid;
         Address = address;
-
-        selectHighlight.SetActive(false);
-        hoverHighlight.SetActive(false);
     }
 
     public List<Tile> GetAdjacent()
@@ -67,11 +64,14 @@ public class Tile : MonoBehaviour
         Occupier = tower;
 
         tower.transform.parent = transform;
-        tower.transform.localPosition = new(0, 0, -3);
+        tower.transform.localPosition = new(0, 0, -5);
     }
 
     public void OnMouseDown()
     {
+        if (Occupier != null)
+            return;
+
         Path pathObject = grid.PathObject;
 
         if (pathObject.Pathway.Contains(this))

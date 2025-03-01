@@ -10,6 +10,7 @@ public class Field : MonoBehaviour
     // Values are set within the inspector
     [SerializeField] private Spawner spawner;
     [SerializeField] private Base endBase;
+    [SerializeField] private TowerManager towerManager;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject container;
     [SerializeField] private TMP_InputField seedInput;
@@ -26,6 +27,8 @@ public class Field : MonoBehaviour
     public int Rows => rows;
     public int Columns => columns;
     public Tile SelectedTile { get; private set; }
+
+    public GameObject indicator;
 
     // Awake is called when the game starts running
     private void Awake()
@@ -95,6 +98,9 @@ public class Field : MonoBehaviour
 
         if (SelectedTile != null)
             SelectTile(SelectedTile);
+
+        towerManager.ClearAllTowers();
+        endBase.ResetBase();
     }
 
     // Converts the given address to a world position
@@ -142,5 +148,9 @@ public class Field : MonoBehaviour
         }
 
         towerMenu.SetActive(SelectedTile != null);
+        indicator.SetActive(SelectedTile != null);
+
+        indicator.transform.parent = tile.transform;
+        indicator.transform.localPosition = new(0, 0, -4);
     }
 }

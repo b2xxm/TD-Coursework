@@ -5,7 +5,8 @@ using TMPro;
 
 public class TowerManager : MonoBehaviour
 {
-    private Dictionary<Tower, Tile> occupation;
+    private List<Tower> towers;
+    private TowerType? selectedType;
 
     [SerializeField] private List<TowerData> towerDatas;
     [SerializeField] private GameObject towerPrefab;
@@ -13,11 +14,11 @@ public class TowerManager : MonoBehaviour
     [SerializeField] private TMP_Text purchaseCost;
     [SerializeField] private TMP_Text selectedTower;
 
-    private TowerType? selectedType;
+    public GameObject indicator;
 
     public void Awake()
     {
-        occupation = new();
+        towers = new();
     }
 
     public void Select(TowerType type)
@@ -28,6 +29,11 @@ public class TowerManager : MonoBehaviour
         selectedTower.SetText(type.ToString());
 
         selectedType = type;
+
+        indicator.transform.localScale = new(
+            data.range * 2,
+            data.range * 2
+        );
     }
 
     public void Purchase()
@@ -45,16 +51,26 @@ public class TowerManager : MonoBehaviour
 
         GameObject towerObject = Instantiate(towerPrefab);
         Tower tower = towerObject.GetComponent<Tower>();
-
-        tower.type = type;
-        tower.spriteRenderer.color = data.color;
+        tower.Initialise(data);
 
         grid.SelectedTile.PlaceTower(tower);
-        occupation.Add(tower, grid.SelectedTile);
+        towers.Add(tower);
+        grid.SelectTile(grid.SelectedTile);
     }
 
     public TowerData GetDataFromType(TowerType type)
     {
         return towerDatas.Find(data => data.type == type);
+    }
+
+    public void ClearAllTowers()
+    {
+        foreach (Tower tower in towers) {
+            Destroy(tower.gameObject);
+        }
+
+        Debug.Log(towers.Count);
+
+        towers.Clear();
     }
 }
