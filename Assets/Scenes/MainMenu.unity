@@ -279,7 +279,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 401982977}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 601012324}
+        m_TargetAssemblyTypeName: MenuUI, Assembly-CSharp
+        m_MethodName: Medium
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &401982977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selection: {fileID: 545834377}
   easySchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
-  mediumSchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
+  mediumSchedule: {fileID: 11400000, guid: ab87c9a607d492f44a2503cb90d4749b, type: 2}
   hardSchedule: {fileID: 11400000, guid: 193367e914463d34782b113603a73a10, type: 2}
 --- !u!1 &649278103
 GameObject:

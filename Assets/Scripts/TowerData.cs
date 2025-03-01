@@ -8,7 +8,9 @@ public class TowerData : ScriptableObject
 {
     public TowerType type;
     public int cost;
+    public int attack;
+    public float range;
+    public float fireRate;
 
     public Color color;
-    // <note> add other properties
 }

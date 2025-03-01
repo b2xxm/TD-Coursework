@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1b5c80c28101c14b85de2b956c1ed30, type: 3}
-  m_Name: Sniper
+  m_Script: {fileID: 11500000, guid: 24a53f1698471f643b278786a4db94e8, type: 3}
+  m_Name: Medium
   m_EditorClassIdentifier: 
-  type: 1
-  cost: 30
-  color: {r: 0.20392157, g: 0.65882355, b: 0.3529412, a: 1}
+  waves:
+  - batches:
+    - type: 0
+      count: 1
+      offsetNext: 0
+      rate: 1
+    duration: 20
