@@ -7,6 +7,7 @@ public class Tower : MonoBehaviour
     private List<Enemy> targets;
     private Coroutine attackCoroutine;
     private WaitForSeconds waitInterval;
+    private Enemy target;
 
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private CircleCollider2D collider2d;
@@ -32,6 +33,12 @@ public class Tower : MonoBehaviour
 
     public Enemy FindFirstEnemy()
     {
+        /* <note> possibly optimize by predicting first enemy
+         * if next entered enemy has greater move speed, cache enemy and calculate time taken until surpass
+         *      possibly a dictionary first enemy for each type
+         * recalculate every exit
+         */
+
         Enemy firstEnemy = null;
         float highestTravelled = 0;
 
@@ -48,19 +55,31 @@ public class Tower : MonoBehaviour
     public IEnumerator AttackLoop()
     {
         while (true) {
-            Enemy enemy = FindFirstEnemy();
+            target = FindFirstEnemy();
 
-            if (enemy == null) {
+            if (target == null) {
                 attackCoroutine = null;
 
                 yield break;
             }
 
-            enemy.TakeDamage(Attack);
+            target.TakeDamage(Attack);
 
             yield return waitInterval;
         }
     }
+
+    public void Update()
+    {
+        if (target != null) {
+            Vector3 direction = target.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            // Subtracts 90 as 0 is north, while the calculated angle assumes 0 is east
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        }
+    }
+
 
     public void OnTriggerEnter2D(Collider2D collision)
     {

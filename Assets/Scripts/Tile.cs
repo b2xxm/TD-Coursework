@@ -69,9 +69,6 @@ public class Tile : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (Occupier != null)
-            return;
-
         Path pathObject = grid.PathObject;
 
         if (pathObject.Pathway.Contains(this))

@@ -6,7 +6,6 @@ using TMPro;
 public class TowerManager : MonoBehaviour
 {
     private List<Tower> towers;
-    private TowerType? selectedType;
 
     [SerializeField] private List<TowerData> towerDatas;
     [SerializeField] private GameObject towerPrefab;
@@ -15,10 +14,13 @@ public class TowerManager : MonoBehaviour
     [SerializeField] private TMP_Text selectedTower;
 
     public GameObject indicator;
+    public TowerType SelectedType { get; private set; }
 
     public void Awake()
     {
         towers = new();
+
+        Select(TowerType.Basic);
     }
 
     public void Select(TowerType type)
@@ -28,7 +30,7 @@ public class TowerManager : MonoBehaviour
         purchaseCost.SetText($"${data.cost}");
         selectedTower.SetText(type.ToString());
 
-        selectedType = type;
+        SelectedType = type;
 
         indicator.transform.localScale = new(
             data.range * 2,
@@ -38,10 +40,7 @@ public class TowerManager : MonoBehaviour
 
     public void Purchase()
     {
-        if (selectedType is not TowerType type)
-            return;
-
-        TowerData data = GetDataFromType(type);
+        TowerData data = GetDataFromType(SelectedType);
         Base endBase = grid.EndBase;
 
         if (endBase.Cash - data.cost < 0)
@@ -68,8 +67,6 @@ public class TowerManager : MonoBehaviour
         foreach (Tower tower in towers) {
             Destroy(tower.gameObject);
         }
-
-        Debug.Log(towers.Count);
 
         towers.Clear();
     }

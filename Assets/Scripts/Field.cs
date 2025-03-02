@@ -27,7 +27,6 @@ public class Field : MonoBehaviour
     public int Rows => rows;
     public int Columns => columns;
     public Tile SelectedTile { get; private set; }
-
     public GameObject indicator;
 
     // Awake is called when the game starts running
@@ -142,12 +141,29 @@ public class Field : MonoBehaviour
 
         if (SelectedTile == tile) {
             SelectedTile = null;
+            towerMenu.SetActive(false);
         } else {
             SelectedTile = tile;
+
+            Tower occupier = SelectedTile.Occupier;
+            TowerData data;
+
+            if (occupier == null) {
+                data = towerManager.GetDataFromType(towerManager.SelectedType);
+                towerMenu.SetActive(true);
+            } else {
+                data = towerManager.GetDataFromType(occupier.Type);
+                towerMenu.SetActive(false);
+            }
+
+            indicator.transform.localScale = new(
+                data.range * 2,
+                data.range * 2
+            );
+
             tile.Highlight(true);
         }
 
-        towerMenu.SetActive(SelectedTile != null);
         indicator.SetActive(SelectedTile != null);
 
         indicator.transform.parent = tile.transform;
