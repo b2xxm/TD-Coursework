@@ -23,7 +23,7 @@ public class Base : MonoBehaviour
 
             health = value;
 
-            slider.value = (float) health / maxHealth;
+            slider.value = health;
             healthDisplay.SetText($"{health} / {maxHealth}");
         }
     }
@@ -44,6 +44,9 @@ public class Base : MonoBehaviour
     public void Awake()
     {
         ResetBase();
+
+        slider.maxValue = maxHealth;
+        slider.value = maxHealth;
     }
 
     public void TakeDamage(int amount)
@@ -51,7 +54,7 @@ public class Base : MonoBehaviour
         Health = Mathf.Max(Health - amount, 0);
 
         if (Health == 0) {
-            // stop schedule
+            // <note> stop schedule
             // stop completely
         }
     }

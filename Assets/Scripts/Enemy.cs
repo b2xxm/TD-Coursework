@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     private Field grid;
 
     [SerializeField] private BoxCollider2D collider2d;
+    [SerializeField] private Slider healthSlider;
 
     public int Health { get; private set; }
     public int Reward { get; private set; }
@@ -28,11 +30,14 @@ public class Enemy : MonoBehaviour
 
         transform.localScale *= data.scale;
         collider2d.size *= data.scale;
+        healthSlider.maxValue = data.health;
+        healthSlider.value = data.health;
     }
 
     public void TakeDamage(int amount)
     {
         Health -= amount;
+        healthSlider.value = Health;
 
         if (Health <= 0) {
             grid.EndBase.AddCash(Reward);
