@@ -36,8 +36,10 @@ public class Tower : MonoBehaviour
         float highestTravelled = 0;
 
         foreach (Enemy enemy in targets) {
-            if (enemy.Travelled > highestTravelled)
+            if (enemy.Travelled > highestTravelled) {
                 firstEnemy = enemy;
+                highestTravelled = enemy.Travelled;
+            }
         }
 
         return firstEnemy;
