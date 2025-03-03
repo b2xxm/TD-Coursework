@@ -6,14 +6,15 @@ using TMPro;
 
 public class Base : MonoBehaviour
 {
-    private int health;
-    private int cash;
-
+    [SerializeField] private Field grid;
     [SerializeField] private int maxHealth;
     [SerializeField] private int startingCash;
     [SerializeField] private Slider slider;
     [SerializeField] private TMP_Text healthDisplay;
     [SerializeField] private TMP_Text cashDisplay;
+
+    private int health;
+    private int cash;
 
     public int Health {
         get => health;
@@ -54,8 +55,7 @@ public class Base : MonoBehaviour
         Health = Mathf.Max(Health - amount, 0);
 
         if (Health == 0) {
-            // <note> stop schedule
-            // stop completely
+            grid.End(false);
         }
     }
 

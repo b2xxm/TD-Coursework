@@ -14,6 +14,7 @@ public class Wave
 {
     public List<EnemyBatch> batches;
     public int duration; // Wave duration
+    public int waveReward; // Cash after wave finish
 }
 
 [Serializable]

@@ -69,6 +69,9 @@ public class Tile : MonoBehaviour
 
     public void OnMouseDown()
     {
+        if (!grid.Active)
+            return;
+
         Path pathObject = grid.PathObject;
 
         if (pathObject.Pathway.Contains(this))
@@ -79,6 +82,9 @@ public class Tile : MonoBehaviour
 
     public void OnMouseEnter()
     {
+        if (!grid.Active)
+            return;
+
         Path pathObject = grid.PathObject;
 
         if (pathObject.Pathway.Contains(this))
@@ -89,6 +95,9 @@ public class Tile : MonoBehaviour
 
     public void OnMouseExit()
     {
+        if (!grid.Active)
+            return;
+
         Path pathObject = grid.PathObject;
 
         if (pathObject.Pathway.Contains(this))

@@ -16,6 +16,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private List<EnemyData> enemyDatas;
     [SerializeField] private TMP_Text waveCountText;
     [SerializeField] private TMP_Text durationText;
+    [SerializeField] private SpawnSchedule defaultSchedule;
 
     private readonly WaitForSeconds waitSecond = new(1);
     private bool shouldSkip;
@@ -32,6 +33,9 @@ public class Spawner : MonoBehaviour
 
     public void Begin()
     {
+        if (schedule == null)
+            schedule = defaultSchedule;
+
         StartCoroutine(RunSchedule(schedule));
     }
 
@@ -69,8 +73,23 @@ public class Spawner : MonoBehaviour
             waveCountText.SetText($"{++waveCount}");
             StartCoroutine(SpawnWave(wave));
 
+            if (wave == schedule.waves[^1]) {
+                durationText.SetText("99:99");
+
+                break;
+            }
+
             yield return StartCoroutine(WaitDuration(wave.duration));
+
+            grid.EndBase.AddCash(wave.waveReward);
         }
+
+        yield return new WaitUntil(() => ActiveEnemies.Count == 0);
+
+        if (grid.EndBase.Health == 0)
+            yield break;
+
+        grid.End(true);
     }
 
     private IEnumerator SpawnWave(Wave wave)

@@ -16,6 +16,7 @@ public class Field : MonoBehaviour
     [SerializeField] private TMP_InputField seedInput;
     [SerializeField] private GameObject buttons;
     [SerializeField] private GameObject towerMenu;
+    [SerializeField] private EndMenu endMenu;
     [SerializeField] private float padding;
     [SerializeField] private int rows;
     [SerializeField] private int columns;
@@ -28,12 +29,14 @@ public class Field : MonoBehaviour
     public int Columns => columns;
     public Tile SelectedTile { get; private set; }
     public GameObject indicator;
+    public bool Active { get; private set; }
 
     // Awake is called when the game starts running
     private void Awake()
     {
         tiles = new();
         PathObject = new(this);
+        Active = true;
 
         towerMenu.SetActive(false);
 
@@ -168,5 +171,14 @@ public class Field : MonoBehaviour
 
         indicator.transform.parent = tile.transform;
         indicator.transform.localPosition = new(0, 0, -4);
+    }
+
+    public void End(bool isWin)
+    {
+        Active = false;
+
+        towerMenu.SetActive(false);
+        indicator.SetActive(false);
+        endMenu.Show(isWin);
     }
 }
