@@ -1,58 +1,49 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Spawner : MonoBehaviour
 {
     // Static, enables us to change the variable across scenes
     public static SpawnSchedule schedule;
 
-    private List<Tile> pathway;
-    private bool active;
+    private readonly WaitForSeconds waitSecond = new(1);
 
     [SerializeField] private Field grid;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private List<EnemyData> enemyDatas;
-
-    private void Awake()
-    {
-        active = false;
-    }
+    [SerializeField] private TMP_Text waveCountText;
+    [SerializeField] private TMP_Text durationText;
 
     public void Begin()
     {
-        // More validation, to ensure code doesn't fail
-        if (active)
-            return;
-
-        Path path = grid.PathObject;
-        bool success = SetPath(path.Pathway);
-
-        if (!success)
-            return;
-
-        active = true;
-
         StartCoroutine(RunSchedule(schedule));
     }
 
-    private bool SetPath(List<Tile> pathway)
+    private IEnumerator WaitDuration(int duration)
     {
-        // Added edgecases in case this scenario causes failure
-        if (pathway.Count == 0)
-            return false;
+        for (int currentTime = duration; currentTime >= 0; currentTime--) {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
+            string formatted = timeSpan.ToString(@"mm\:ss"); // @"mm\:ss" allows the string to interpret special characters literally
 
-        this.pathway = pathway;
+            durationText.SetText(formatted);
 
-        return true;
+            yield return waitSecond;
+        }
     }
 
     private IEnumerator RunSchedule(SpawnSchedule schedule)
     {
+        int waveCount = 0;
+
         foreach (Wave wave in schedule.waves) {
+            waveCountText.SetText($"{++waveCount}");
+
             StartCoroutine(SpawnWave(wave));
 
-            yield return new WaitForSeconds(wave.duration);
+            yield return StartCoroutine(WaitDuration(wave.duration));
         }
     }
 
@@ -91,7 +82,7 @@ public class Spawner : MonoBehaviour
             };
 
             enemy.Initialise(grid, enemyData);
-            StartCoroutine(enemy.Traverse(pathway, callback)); // Moves the enemy along the pathway
+            StartCoroutine(enemy.Traverse(grid.PathObject.Pathway, callback)); // Moves the enemy along the pathway
 
             // Suspends execution until given interval has passed
             yield return waitInterval;
