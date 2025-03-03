@@ -18,14 +18,5 @@ MonoBehaviour:
       count: 5
       offsetNext: 2
       rate: 1
-    - type: 1
-      count: 3
-      offsetNext: 2
-      rate: 2
     duration: 30
-  - batches:
-    - type: 2
-      count: 5
-      offsetNext: 0
-      rate: 0.25
-    duration: 20
+    waveReward: 20
