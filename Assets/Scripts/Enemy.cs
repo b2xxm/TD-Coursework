@@ -90,6 +90,16 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
     }
+
+    public void OnDestroy()
+    {
+        Spawner spawner = grid.Spawner;
+        spawner.ActiveEnemies.Remove(this);
+
+        if (spawner.ActiveEnemies.Count == 0 && spawner.IsSpawning == false) {
+            spawner.SkipWaveDuration();
+        }
+    }
 }
 
 public enum EnemyType

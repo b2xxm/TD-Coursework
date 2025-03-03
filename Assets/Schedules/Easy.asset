@@ -22,7 +22,7 @@ MonoBehaviour:
       count: 3
       offsetNext: 2
       rate: 2
-    duration: 20
+    duration: 30
   - batches:
     - type: 2
       count: 5

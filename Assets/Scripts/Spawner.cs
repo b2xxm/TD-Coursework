@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using TMPro;
 
@@ -8,8 +9,7 @@ public class Spawner : MonoBehaviour
 {
     // Static, enables us to change the variable across scenes
     public static SpawnSchedule schedule;
-
-    private readonly WaitForSeconds waitSecond = new(1);
+    private const int waveCooldown = 5;
 
     [SerializeField] private Field grid;
     [SerializeField] private GameObject enemyPrefab;
@@ -17,9 +17,27 @@ public class Spawner : MonoBehaviour
     [SerializeField] private TMP_Text waveCountText;
     [SerializeField] private TMP_Text durationText;
 
+    private readonly WaitForSeconds waitSecond = new(1);
+    private bool shouldSkip;
+
+    public bool IsSpawning { get; private set; }
+    public List<Enemy> ActiveEnemies { get; private set; }
+
+    public void Awake()
+    {
+        shouldSkip = false;
+        IsSpawning = false;
+        ActiveEnemies = new();
+    }
+
     public void Begin()
     {
         StartCoroutine(RunSchedule(schedule));
+    }
+
+    public void SkipWaveDuration()
+    {
+        shouldSkip = true;
     }
 
     private IEnumerator WaitDuration(int duration)
@@ -31,6 +49,12 @@ public class Spawner : MonoBehaviour
             durationText.SetText(formatted);
 
             yield return waitSecond;
+
+            if (shouldSkip == true) {
+                shouldSkip = false;
+
+                yield break;
+            }
         }
     }
 
@@ -39,8 +63,10 @@ public class Spawner : MonoBehaviour
         int waveCount = 0;
 
         foreach (Wave wave in schedule.waves) {
-            waveCountText.SetText($"{++waveCount}");
+            IsSpawning = true;
+            yield return StartCoroutine(WaitDuration(waveCooldown));
 
+            waveCountText.SetText($"{++waveCount}");
             StartCoroutine(SpawnWave(wave));
 
             yield return StartCoroutine(WaitDuration(wave.duration));
@@ -50,12 +76,17 @@ public class Spawner : MonoBehaviour
     private IEnumerator SpawnWave(Wave wave)
     {
         foreach (EnemyBatch batch in wave.batches) {
+            bool isLast = false;
+
+            if (batch == wave.batches[^1])
+                isLast = true;
+
             // Waits until a batch finishes spawning, then spawns the next batch
-            yield return StartCoroutine(SpawnBatch(batch));
+            yield return StartCoroutine(SpawnBatch(batch, isLast));
         }
     }
 
-    private IEnumerator SpawnBatch(EnemyBatch batch)
+    private IEnumerator SpawnBatch(EnemyBatch batch, bool isLast)
     {
         EnemyType type = batch.type;
         EnemyData enemyData = GetDataFromType(type);
@@ -69,6 +100,9 @@ public class Spawner : MonoBehaviour
         Transform enemyContainer = grid.transform.Find("EnemyContainer");
 
         for (int count = 0; count < batch.count; count++) {
+            if (isLast && count + 1 == batch.count)
+                IsSpawning = false; // Ensures that this state won't toggle off after last enemy is destroyed
+
             GameObject newEnemy = Instantiate(enemyPrefab, enemyContainer); // Creates a new game object, using the prefab as a template
             Enemy enemy = newEnemy.GetComponent<Enemy>(); // Gets the Enemy class component of the game object
 
@@ -82,6 +116,7 @@ public class Spawner : MonoBehaviour
             };
 
             enemy.Initialise(grid, enemyData);
+            ActiveEnemies.Add(enemy);
             StartCoroutine(enemy.Traverse(grid.PathObject.Pathway, callback)); // Moves the enemy along the pathway
 
             // Suspends execution until given interval has passed
