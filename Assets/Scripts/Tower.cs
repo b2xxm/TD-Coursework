@@ -7,7 +7,6 @@ public class Tower : MonoBehaviour
     private List<Enemy> targets;
     private Coroutine attackCoroutine;
     private WaitForSeconds waitInterval;
-    private Enemy target;
 
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private CircleCollider2D collider2d;
@@ -55,15 +54,15 @@ public class Tower : MonoBehaviour
     public IEnumerator AttackLoop()
     {
         while (true) {
-            target = FindFirstEnemy();
+            Enemy enemy = FindFirstEnemy();
 
-            if (target == null) {
+            if (enemy == null) {
                 attackCoroutine = null;
 
                 yield break;
             }
 
-            target.TakeDamage(Attack);
+            enemy.TakeDamage(Attack);
 
             yield return waitInterval;
         }
@@ -71,8 +70,10 @@ public class Tower : MonoBehaviour
 
     public void Update()
     {
-        if (target != null) {
-            Vector3 direction = target.transform.position - transform.position;
+        Enemy enemy = FindFirstEnemy();
+
+        if (enemy != null) {
+            Vector3 direction = enemy.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
             // Subtracts 90 as 0 is north, while the calculated angle assumes 0 is east
