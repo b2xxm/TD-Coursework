@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Class that holds the methods related with the end menu actions
+// Methods are assigned to button click events with the inspector
 public class EndMenu : MonoBehaviour
 {
     [SerializeField] private GameObject winText;

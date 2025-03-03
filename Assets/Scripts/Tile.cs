@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +8,13 @@ public class Tile : MonoBehaviour
 
     private Field grid;
 
+    // Direction vectors, to find the relative adjacent tiles
     private readonly List<Vector2Int> directions = new()
     {
-        new(-1, 0), new(1, 0), new(0, 1), new(0, -1) // Direction vectors, to find the relative adjacent tiles
+        new(-1, 0), new(1, 0), new(0, 1), new(0, -1)
     };
 
+    // Variables set with inspector
     [SerializeField] private GameObject selectHighlight;
     [SerializeField] private GameObject hoverHighlight;
 
@@ -21,12 +22,14 @@ public class Tile : MonoBehaviour
     public Address Address { get; private set; }
     public Tower Occupier { get; private set; }
 
+    // Sets the initial value of the tile
     public void Initialize(Field grid, Address address)
     {
         this.grid = grid;
         Address = address;
     }
 
+    // Returns a list of adjacent tiles
     public List<Tile> GetAdjacent()
     {
         List<Tile> adjacent = new();
@@ -54,11 +57,14 @@ public class Tile : MonoBehaviour
         return adjacent;
     }
 
+
+    // Highlights tile if parameter if true, Un-highlights if false
     public void Highlight(bool enabled)
     {
         selectHighlight.SetActive(enabled);
     }
 
+    // Places given tower at this tile
     public void PlaceTower(Tower tower)
     {
         Occupier = tower;
@@ -67,19 +73,24 @@ public class Tile : MonoBehaviour
         tower.transform.localPosition = new(0, 0, -5);
     }
 
+    // Detects when a mouse click occurs over the box collider for this object
     public void OnMouseDown()
     {
+        // Can only be interacted with if the grid is active
         if (!grid.Active)
             return;
 
         Path pathObject = grid.PathObject;
 
+        // If the tile is apart of the pathway then it won't be selected
         if (pathObject.Pathway.Contains(this))
             return;
 
         grid.SelectTile(this);
     }
 
+    // Detects when a mouse hover occurs over the box collider for this object
+    // Same functionality as above
     public void OnMouseEnter()
     {
         if (!grid.Active)
@@ -93,6 +104,7 @@ public class Tile : MonoBehaviour
         hoverHighlight.SetActive(true);
     }
 
+    // Same as above method, but for exit
     public void OnMouseExit()
     {
         if (!grid.Active)

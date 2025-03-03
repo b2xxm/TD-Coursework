@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
+// Creates a scriptable object, makes designing tower data intuitive and easy
 [CreateAssetMenu(fileName = "TowerData", menuName = "ScriptableObjects/TowerData")]
 public class TowerData : ScriptableObject
 {

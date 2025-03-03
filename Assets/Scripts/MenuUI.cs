@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// A class that holds the methods related to menu actions
+// These methods are assigned to buttons with inspector
 public class MenuUI : MonoBehaviour
 {
     [SerializeField] private GameObject selection;

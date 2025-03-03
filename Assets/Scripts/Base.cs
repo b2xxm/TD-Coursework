@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class Base : MonoBehaviour
 {
+    // Variables are set in the inspector
     [SerializeField] private Field grid;
     [SerializeField] private int maxHealth;
     [SerializeField] private int startingCash;
@@ -15,6 +14,9 @@ public class Base : MonoBehaviour
 
     private int health;
     private int cash;
+
+    // Custom private setters (can only be set within the class)
+    // Getter acts as a proxy, returning the variables that are privately managed
 
     public int Health {
         get => health;
@@ -42,6 +44,7 @@ public class Base : MonoBehaviour
         }
     }
 
+    // Function is called when the game starts
     public void Awake()
     {
         ResetBase();
@@ -50,20 +53,24 @@ public class Base : MonoBehaviour
         slider.value = maxHealth;
     }
 
+    // Takes given amount of damage off of the base
     public void TakeDamage(int amount)
     {
         Health = Mathf.Max(Health - amount, 0);
 
+        // When health drops to 0, end the game on a loss
         if (Health == 0) {
             grid.End(false);
         }
     }
 
+    // Setter method to edit cash variable
     public void AddCash(int amount)
     {
         Cash += amount;
     }
 
+    // Sets the base back to default value
     public void ResetBase()
     {
         Health = maxHealth;

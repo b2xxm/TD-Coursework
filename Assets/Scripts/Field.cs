@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -91,13 +90,18 @@ public class Field : MonoBehaviour
         }
     }
 
+    // Generates a random seed and path
     public void RandomiseSeed()
     {
+        // Generates a random path, without seed argument (will then generate a random one)
         PathObject.Generate(null);
 
+        // Set the seed to the text box, so that players can copy seed values to replay seeds
         string seedText = PathObject.Seed.ToString();
         seedInput.text = seedText;
 
+        // Randomising the seed while the player already selects a tile/ placed a tower could lead to problems
+        // So this ensures that there are no towers placed, no selected tiles, and default cash values
         if (SelectedTile != null)
             SelectTile(SelectedTile);
 
@@ -129,6 +133,7 @@ public class Field : MonoBehaviour
         return success ? tile : null;
     }
 
+    // Starts spawning enemies and disables being able to change the seed during active spawning
     public void StartGame()
     {
         seedInput.readOnly = true;
@@ -137,46 +142,57 @@ public class Field : MonoBehaviour
         Spawner.Begin();
     }
 
+    // Selects a tile and determines which actions are available
     public void SelectTile(Tile tile)
     {
+        // Un-highlights the current selected tile
         if (SelectedTile != null)
             SelectedTile.Highlight(false);
 
+        // If the current selected tile is being selected, deselect it
         if (SelectedTile == tile) {
             SelectedTile = null;
             towerMenu.SetActive(false);
-        } else {
+        } else { // A new tile is being selected
             SelectedTile = tile;
 
             Tower occupier = SelectedTile.Occupier;
             TowerData data;
 
             if (occupier == null) {
+                // If the tower isn't occupying the tile, allow them to purchase a selection of towers
                 data = towerManager.GetDataFromType(towerManager.SelectedType);
                 towerMenu.SetActive(true);
             } else {
+                // Otherwise, allow them to visualise the range of the tower (from the recieved tower data)
                 data = towerManager.GetDataFromType(occupier.Type);
                 towerMenu.SetActive(false);
             }
 
+            // data.range * 2 because the range is a radius, and the local scale should use diameter
             indicator.transform.localScale = new(
                 data.range * 2,
                 data.range * 2
             );
 
+            // Highlights the tile
             tile.Highlight(true);
         }
 
+        // Sets the indicator to active if there is a selected tile, else inactive
         indicator.SetActive(SelectedTile != null);
 
         indicator.transform.parent = tile.transform;
         indicator.transform.localPosition = new(0, 0, -4);
     }
 
+    // End the game, true = win, false = lose
     public void End(bool isWin)
     {
+        // Used to determine the interactibility of each tile
         Active = false;
 
+        // Hide everything, show end menu (displaying restart/ menu option)
         towerMenu.SetActive(false);
         indicator.SetActive(false);
         endMenu.Show(isWin);

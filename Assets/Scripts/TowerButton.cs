@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Button class for each tower button (purchase menu)
 public class TowerButton : MonoBehaviour
 {
     [SerializeField] private TowerManager towerManager;
@@ -10,6 +9,7 @@ public class TowerButton : MonoBehaviour
 
     public TowerType type;
 
+    // Initialises the image color on the button
     public void Awake()
     {
         TowerData data = towerManager.GetDataFromType(type);
